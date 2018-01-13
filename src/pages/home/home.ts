@@ -48,13 +48,7 @@ export class HomePage implements OnInit{
       .subscribe(data => {
 
         this.weatherData = this.getWeatherData(data);
-/*
-        this.weatherData.icon = openWeatherConfig.imgUrl + data['weather'][0].icon + '.png';
-        this.weatherData.main = data['weather'][0].main;
-        this.weatherData.city = data['name'];
-        this.weatherData.description = data['weather'][0].description;
-        this.weatherData.temp = data['main'].temp;
-*/
+
         this.data = true;
         this.noData = false;
       },
@@ -124,21 +118,7 @@ export class HomePage implements OnInit{
 
 
   }
-
-/*
-  private timeConverter(UNIX_timestamp){
-    let a = new Date(UNIX_timestamp * 1000);
-    let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    let year = a.getFullYear();
-    let month = months[a.getMonth()];
-    let date = a.getDate();
-    let hour = a.getHours();
-    let min = a.getMinutes();
-    let sec = a.getSeconds();
-    return date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-  }
-*/
-
+  
   private weekDay(UNIX_timestamp){
     let a = new Date(UNIX_timestamp * 1000);
 
