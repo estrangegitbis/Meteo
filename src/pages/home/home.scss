@@ -1,3 +1,60 @@
 page-home {
+  ion-content{
+    background-image: url('../../assets/imgs/clouds.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+  .scroll-content {
+    overflow-y: auto;
+  }
+  .overlay {
+    padding: 15px;
+    background-color: #000000;
+    opacity: 0.5;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .input-label {
+    color: #ffffff;
+  }
+  input[type="text"] {
+    color: #FFFFFF;
+    background-color: #000000;
+    opacity: 0.5;
+    border:none;
+  }
+
+  .forecast {
+    margin-top: 10%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .forecast-button {
+    margin-top: 10%;
+  }
+
+  .bigText {
+    flex: 2;
+    font-size: 20px;
+    text-align: center;
+    margin: 5px;
+    color: #212145;
+  }
+
+  .mainText {
+    flex: 1;
+    font-size: 16px;
+    text-align: center;
+    color: #212145;
+  }
+
+  .icon {
+    margin-left: 50px;
+    height: 50px;
+    width: 50px;
+  }
 
 }

@@ -1,14 +1,39 @@
+<!--
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Votre Météo du jour
     </ion-title>
   </ion-navbar>
 </ion-header>
+-->
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <div text-center class="overlay">
+    <label class="item-input">
+      <span class="input-label city">Ville :</span>
+      <input type="text" (focus)="typping()" placeholder="Paris,fr" [(ngModel)]="search"/>
+    </label>
+  </div>
+  <div text-center class="forecast-button">
+    <button ion-button round outline color="darkBlue" (click)="loadWeather(search)">Search</button>
+  </div>
+  <div *ngIf="data" class="forecast">
+    <img src="{{weatherData.icon}}"/>
+    <label class="bigText">{{weatherData.main}}</label>
+    <div class="mainText">{{weatherData.city}}</div>
+    <div class="mainText">{{weatherData.description}}</div>
+    <div class="bigText">{{weatherData.temp}} °C</div>
+  </div>
+  <div class="forecast">
+    <div *ngFor="let forecastData of weatherForecastDatas">
+      <div class="mainText">{{forecastData.day}} - {{forecastData.description}} - {{forecastData.temp}} °C</div>
+      <div text-center>
+        <img src="{{forecastData.icon}}"/>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="noData" class="forecast">
+    <div class="mainText">Il n'y a pas de données pour la ville de {{search}}</div>
+  </div>
 </ion-content>
