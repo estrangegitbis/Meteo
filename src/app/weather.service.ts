@@ -20,7 +20,7 @@ export class WeatherService {
     return this.http.get(url);
   }
 
-  public getForcast(city: string) {
+  public getForecast(city: string) {
     let url = openWeatherConfig.forecastUrlByName + city + openWeatherConfig.units
       + openWeatherConfig.appid;
 
@@ -30,6 +30,14 @@ export class WeatherService {
   public getWeatherCurrentPosition(latitude: number, longitude: number): Observable<Object> {
 
     let url = openWeatherConfig.weatherUrl + 'lat=' + latitude + '&lon=' + longitude
+      + openWeatherConfig.units + openWeatherConfig.appid;
+    return this.http.get(url);
+
+  }
+
+  public getForecastCurrentPosition(latitude: number, longitude: number): Observable<Object> {
+
+    let url = openWeatherConfig.forecastUrl + 'lat=' + latitude + '&lon=' + longitude
       + openWeatherConfig.units + openWeatherConfig.appid;
     return this.http.get(url);
 

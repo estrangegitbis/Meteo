@@ -12,23 +12,8 @@ import {WeatherService} from '../../app/weather.service';
 })
 export class HomePage implements OnInit{
 
-
   ngOnInit(): void{
-    this.geolocation.getCurrentPosition().then((resp)=> {
-
-      console.log(resp);
-
-      let latitude = resp.coords.latitude;
-      let longitude = resp.coords.longitude;
-
-      console.log(latitude);
-      console.log(longitude);
-
-    }).catch((error) => {
-      console.log('Error getting location');
-      console.log('Code d\'erreur: ' + error.code);
-      console.log('Message d\'erreur: ' + error.message);
-    })
+    this.loadWeatherByPosition();
   }
 
   private data = false;
@@ -57,46 +42,50 @@ export class HomePage implements OnInit{
         this.noData = true;
       });
 
-    this.weatherService.getForcast(this.search)
+    this.weatherService.getForecast(this.search)
       .subscribe(data => {
-
-          this.weatherForecastDatas = [];
-
-          let list = data['list'];
-
-          let now = new Date();
-
-          let date1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12).getTime();
-          let date2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2, 12).getTime();
-          let date3 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3, 12).getTime();
-
-          let date1Ok = false;
-          let date2Ok = false;
-          let date3Ok = false;
-
-
-          for(let i = 0; i < list.length; i++)
-          {
-            if(!date1Ok && ((list[i].dt * 1000)>date1)){
-                this.weatherForecastDatas.push(this.getWeatherData(list[i]));
-                date1Ok = true;
-            }
-
-            if(!date2Ok && ((list[i].dt * 1000)>date2)){
-              this.weatherForecastDatas.push(this.getWeatherData(list[i]));
-              date2Ok = true;
-            }
-
-            if(!date3Ok && ((list[i].dt * 1000)>date3)){
-              this.weatherForecastDatas.push(this.getWeatherData(list[i]));
-              date3Ok = true;
-            }
-          }
+          this.weatherForecastDatas = this.getForecastDatas(data);
         },
         err=>{
           this.weatherForecastDatas = [];
           console.log(JSON.stringify(err));
         });
+  }
+
+
+  loadWeatherByPosition(): void{
+    this.geolocation.getCurrentPosition().then((resp)=> {
+
+      let latitude = resp.coords.latitude;
+      let longitude = resp.coords.longitude;
+
+      this.weatherService.getWeatherCurrentPosition(latitude, longitude)
+        .subscribe(data => {
+            this.weatherData = this.getWeatherData(data);
+            this.data = true;
+            this.noData = false;
+
+          },
+          err=>{
+            this.data = false;
+            this.noData = true;
+          });
+
+      this.weatherService.getForecastCurrentPosition(latitude, longitude)
+        .subscribe(data => {
+            this.weatherForecastDatas = this.getForecastDatas(data);
+          },
+          err=>{
+            this.weatherForecastDatas = [];
+            console.log(JSON.stringify(err));
+          });
+
+
+    }).catch((error) => {
+      console.log('Error getting location');
+      console.log('Code d\'erreur: ' + error.code);
+      console.log('Message d\'erreur: ' + error.message);
+    })
   }
 
   typping(): void {
@@ -114,18 +103,49 @@ export class HomePage implements OnInit{
     weatherDataTemp.temp = Math.round(data['main'].temp);
 
     return weatherDataTemp;
-
-
-
   }
-  
+
+  getForecastDatas(data): WeatherData[]{
+    let forecastDataTemp = [];
+
+    let list = data['list'];
+
+    let now = new Date();
+
+    let date1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12).getTime();
+    let date2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2, 12).getTime();
+    let date3 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3, 12).getTime();
+
+    let date1Ok = false;
+    let date2Ok = false;
+    let date3Ok = false;
+
+
+    for(let i = 0; i < list.length; i++) {
+      if (!date1Ok && ((list[i].dt * 1000) > date1)) {
+        forecastDataTemp.push(this.getWeatherData(list[i]));
+        date1Ok = true;
+      }
+
+      if (!date2Ok && ((list[i].dt * 1000) > date2)) {
+        forecastDataTemp.push(this.getWeatherData(list[i]));
+        date2Ok = true;
+      }
+
+      if (!date3Ok && ((list[i].dt * 1000) > date3)) {
+        forecastDataTemp.push(this.getWeatherData(list[i]));
+        date3Ok = true;
+      }
+    }
+    return forecastDataTemp;
+  }
+
   private weekDay(UNIX_timestamp){
     let a = new Date(UNIX_timestamp * 1000);
 
     let days = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'];
     return days[a.getDay()];
   }
-
 }
 
 class WeatherData {

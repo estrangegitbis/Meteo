@@ -15,7 +15,8 @@
       <input type="text" (focus)="typping()" placeholder="Paris,fr" [(ngModel)]="search"/>
     </label>
   </div>
-  <div text-center class="forecast-button">
+  <div text-center class="forecast-buttons">
+    <ion-icon name="locate" (click)="loadWeatherByPosition()"></ion-icon>
     <button ion-button round outline color="darkBlue" (click)="loadWeather(search)">Search</button>
   </div>
   <div *ngIf="data" class="forecast">
@@ -27,13 +28,13 @@
   </div>
   <div class="forecast">
     <div *ngFor="let forecastData of weatherForecastDatas">
-      <div class="mainText">{{forecastData.day}} - {{forecastData.description}} - {{forecastData.temp}} °C</div>
+      <div class="mainText">{{forecastData.day}} / {{forecastData.description}} / {{forecastData.temp}} °C</div>
       <div text-center>
         <img src="{{forecastData.icon}}"/>
       </div>
     </div>
   </div>
   <div *ngIf="noData" class="forecast">
-    <div class="mainText">Il n'y a pas de données pour la ville de {{search}}</div>
+    <div class="mainText">Il n'y a aucune donnée disponible</div>
   </div>
 </ion-content>

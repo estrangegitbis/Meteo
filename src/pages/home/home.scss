@@ -1,12 +1,15 @@
 page-home {
   ion-content{
-    background-image: url('../../assets/imgs/clouds.jpg');
+    background-image: url('../assets/imgs/clouds.jpg');
     background-size: 100% 100%;
     background-repeat: no-repeat;
+    -webkit-background-size: 120% auto;
   }
+
   .scroll-content {
     overflow-y: auto;
   }
+
   .overlay {
     padding: 15px;
     background-color: #000000;
@@ -32,8 +35,17 @@ page-home {
     flex-direction: column;
   }
 
-  .forecast-button {
+  .forecast-buttons {
     margin-top: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    ion-icon{
+      font-size: 3em;
+      color: #6699ff;
+      vertical-align: top;
+    }
   }
 
   .bigText {
